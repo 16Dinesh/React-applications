@@ -3,12 +3,12 @@ import { getAuth, GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider }
 
 // Your Firebase configuration object (Replace with your own Firebase credentials)
 const firebaseConfig = {
-    apiKey: "AIzaSyDlc7RjTJIMVJe4O8sMHd55U_9aLlZHiOc",
+    apiKey: import.meta.env.VITE_FIRE_BASE_API_KEY,
     authDomain: "login-autho-vi.firebaseapp.com",
     projectId: "login-autho-vi",
     storageBucket: "login-autho-vi.appspot.com",
-    messagingSenderId: "161578439001",
-    appId: "1:161578439001:web:c8cc4bfb26721b7679fc48"
+    messagingSenderId: import.meta.env.VITE_FIRE_BASEMESSAGINHG_SENDER_ID,
+    appId: import.meta.env.VITE_FIRE_BASE_APP_ID
   };
 
 // Initialize Firebase
