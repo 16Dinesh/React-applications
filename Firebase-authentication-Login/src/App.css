@@ -7,13 +7,23 @@
   font-family: "Poppins", sans-serif;
 }
 
-body {
-  background: #dfe9f5;
-}
+  /* body {
+    background: #dfe9f5;
+  } */
+
+
+  #tsparticles {
+    position: fixed;
+    z-index: 0; 
+  }
+  
 
 .wrapper {
+  position: relative;
+  z-index: 1;
   width: 330px;
-  padding: 2rem 0 1rem 0;
+  /* padding: 2rem 0 1rem 0; */
+  padding: 1rem;
   margin: 50px auto;
   background: #fff;
   border-radius: 10px;
