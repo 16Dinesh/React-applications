@@ -1,0 +1,100 @@
+.user-register-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    /* background: #f5f5f5; */
+    border-radius: 8px;
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+  }
+  
+  .user-register-heading {
+    color: #333;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .user-register-highlight {
+    color: #4CAF50;
+    font-weight: bold;
+  }
+  
+  .user-register-subtext {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .user-register-sign-up-text {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .user-register-login-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .user-register-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .user-register-icon-box:hover {
+    background-color: #d5d5d5;
+  }
+  
+  .user-login-separator {
+    font-size: 0.9rem;
+    color: #888;
+    margin: 1.5rem 0;
+  }
+  
+  .user-register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .user-register-button {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .user-register-button:hover {
+    background-color: #45a049;
+  }
+  
+  .user-login-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .user-login-box:hover {
+    background-color: #f0f0f0;
+  }
+  

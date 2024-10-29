@@ -1,0 +1,52 @@
+.user-forgot-email-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    /* background-color: #f9f9f9; */
+    border-radius: 8px;
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+  }
+  
+  .user-forgot-email-heading {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .user-forgot-email-subtext {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+  }
+  
+  .user-forgot-email-input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .user-forgot-email-submit-button {
+    width: 250px;
+    padding: 0.8rem;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .user-forgot-email-submit-button:hover {
+    background-color: #45a049;
+  }
+  
+  .user-forgot-email-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  

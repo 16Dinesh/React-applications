@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
 
 * {
   margin: 0;
@@ -7,16 +7,14 @@
   font-family: "Poppins", sans-serif;
 }
 
-  /* body {
+/* body {
     background: #dfe9f5;
   } */
 
-
-  #tsparticles {
-    position: fixed;
-    z-index: 0; 
-  }
-  
+#tsparticles {
+  position: fixed;
+  z-index: 0;
+}
 
 .wrapper {
   position: relative;
@@ -69,7 +67,7 @@ button {
   outline: none;
   border: none;
   width: 85%;
-  background: #5B864D;
+  background: #5b864d;
   color: #fff;
   cursor: pointer;
 }
@@ -87,7 +85,7 @@ button:hover {
   color: #07001f;
   padding: 00.8rem 1.5rem;
   border-radius: 10px;
-  margin-left: .9rem;
+  margin-left: 0.9rem;
   font-size: 1.5rem;
   cursor: pointer;
   border: 2px solid #dfe9f5;
@@ -136,7 +134,7 @@ a:hover {
   outline: none;
   border: none;
   width: 85%;
-  background: #5B864D;
+  background: #5b864d;
   color: #fff;
   cursor: pointer;
 }
