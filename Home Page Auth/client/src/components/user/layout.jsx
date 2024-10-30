@@ -6,7 +6,7 @@ export default function UserLoginsLayout() {
   const isUserPage = location.pathname.includes("login");
   const isRegisterPage = location.pathname.includes("register");
 
-  console.log(location.pathname);
+  // console.log(location.pathname);
     return (
         <>
         <div className="user-login-Layout">
@@ -17,11 +17,11 @@ export default function UserLoginsLayout() {
       <div style={{ textAlign: "center", marginTop:"1rem", paddingBottom:"2rem"}}>
         {isUserPage ? (
           <>
-            Don't have an account? <Link to='/register' >Register Now</Link>
+            Don't have an account? <Link to='/auth/register' >Register Now</Link>
           </>
         ) : isRegisterPage ? (
           <>
-            Have an account? <Link to='/login'>Login now</Link>
+            Have an account? <Link to='/auth/login'>Login now</Link>
           </>
         ) : null}
       </div>

@@ -1,24 +1,32 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
 import {
-  TextField,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
-import { Google, Facebook, Visibility, VisibilityOff, Person as User2 } from "@mui/icons-material"; 
-import "../styles/register.css"
+  Google,
+  Facebook,
+  Visibility,
+  VisibilityOff,
+  Person as User2,
+} from "@mui/icons-material";
+import "../styles/register.css";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../store/userAuth-slice";
 
 const initialState = {
   userName: "",
   email: "",
   number: "",
-  password: ""
+  password: "",
 };
 
 export default function UserRegister() {
   const [data, setData] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("+91");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // capture redirect path
+  const dispatch = useDispatch();
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -36,21 +44,59 @@ export default function UserRegister() {
     // Anonymous login logic
   };
 
+  const handlePhoneNumberChange = (e) => {
+    const input = e.target.value;
+    if (input.startsWith("+91") && input.length <= 13) {
+      setPhoneNumber(input);
+      setData({ ...data, number: input });
+    }
+  };
+
+  const handleBlur = () => {
+    if (phoneNumber === "+91") {
+      setPhoneNumber("");
+    }
+  };
+
+  const handleFocus = () => {
+    if (!phoneNumber.startsWith("+91")) {
+      setPhoneNumber("+91");
+    }
+  };
+
+  const handleUserRegister = async () => {
+    setLoading(true);
+    try {
+      const response = await dispatch(registerUser(data));
+      if (response?.payload?.success) {
+        console.log("User Registered");
+        setData(initialState);
+        const redirectPath = location.state?.from || "/home"; 
+        console.log(redirectPath)
+        navigate(redirectPath);
+      } else {
+        console.log("User not registered");
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="user-register-container">
-      <h4 className="user-register-heading">
-        Welcome to <span className="user-register-highlight">Green Assist!</span>
-      </h4>
-      <p className="user-register-subtext">
-        Register now and connect with our expert team for all your home needs
-      </p>
+      <h4 className="user-register-heading">Your Company</h4>
       <p className="user-register-sign-up-text">Quick Sign Up with:</p>
       <div className="user-register-login-icons">
-        <div onClick={handleFireBaseGoogleLogin} className="user-register-icon-box">
-          <Google style={{ fontSize: "2.8rem" }} />
+        <div
+          onClick={handleFireBaseGoogleLogin}
+          className="user-register-icon-box"
+        >
+          <Google style={{ fontSize: "2.8rem", color: "black" }} />
         </div>
         <div onClick={handleAnonymousLogin} className="user-register-icon-box">
-          <Facebook style={{ fontSize: "3.4rem" }} />
+          <Facebook style={{ fontSize: "3.4rem", color: "black" }} />
         </div>
       </div>
       <div className="user-login-separator">---- or ----</div>
@@ -83,8 +129,10 @@ export default function UserRegister() {
           variant="outlined"
           size="small"
           name="number"
-          value={data.number}
-          onChange={handleChange}
+          value={phoneNumber}
+          onChange={handlePhoneNumberChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           fullWidth
           margin="normal"
         />
@@ -110,13 +158,17 @@ export default function UserRegister() {
           }}
         />
       </form>
-      <button className="user-register-button" onClick={() => navigate("/home")}>
-        Register
+      <button
+        className="user-register-button"
+        onClick={handleUserRegister}
+        disabled={loading}
+      >
+        {loading ? "Registering..." : "Register"}
       </button>
       <div className="user-login-separator">---- or ----</div>
       <div className="user-login-box" onClick={handleAnonymousLogin}>
-        <User2 style={{ fontSize: "2rem" }} />
-        <span>Register Anonymously</span>
+        <User2 style={{ fontSize: "2rem", color: "black" }} />
+        <span style={{ color: "black" }}>Register Anonymously</span>
       </div>
     </div>
   );

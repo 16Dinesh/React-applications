@@ -1,27 +1,61 @@
 import "../styles/login.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Phone, Google, Facebook } from "@mui/icons-material"; // Importing MUI icons
+import { Phone, Google, Facebook } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../store/userAuth-slice";
+
+const initialData = {
+  email: "",
+  password: "",
+};
 
 export default function UserLogin() {
+  const [formData, setFormData] = useState(initialData);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const location = useLocation();
+  const dispatch = useDispatch();
 
-  const handleLogin = () => {
-    // Login logic here
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const response = await dispatch(loginUser(formData));
+      if (response?.payload?.success) {
+        setFormData(initialData);
+        const redirectPath = location.state?.from || "/home";
+        console.log(redirectPath);
+        navigate(redirectPath);
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFormOTP = () => {
-    navigate("/otp")
+    navigate("/auth/otp");
   };
 
   const handleGoogle = () => {
-    // Google login logic here
+    // Placeholder for Google login logic
+    console.log("Google login clicked");
   };
 
   const handleFacebook = () => {
-    // Facebook login logic here
+    // Placeholder for Facebook login logic
+    console.log("Facebook login clicked");
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   return (
@@ -33,16 +67,16 @@ export default function UserLogin() {
             placeholder="Enter your email"
             name="email"
             type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
             className="user-login-input"
           />
           <input
             placeholder="Enter your password"
             name="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
             className="user-login-input"
           />
         </div>
@@ -50,27 +84,31 @@ export default function UserLogin() {
           <label>
             <input type="checkbox" /> Remember Me
           </label>
-          <Link to="/forgot-user" className="user-login-forgot-link">
+          <Link to="/auth/forgot-user" className="user-login-forgot-link">
             Forgot Password?
           </Link>
         </div>
       </div>
-      <button className="user-login-button" onClick={handleLogin}>
-        Login
+      <button
+        className="user-login-button"
+        onClick={handleLogin}
+        disabled={loading}
+      >
+        {loading ? "Logging in..." : "Login"}
       </button>
       <div className="user-login-separator">---- or ----</div>
       <div className="user-login-controllers">
         <div className="user-login-box" onClick={handleFormOTP}>
           <Phone className="user-login-icon" />
-          <span>Login With OTP</span>
+          <span style={{ color: "black" }}>Login With OTP</span>
         </div>
         <div className="user-login-box" onClick={handleGoogle}>
           <Google className="user-login-icon" />
-          <span>Login With Google</span>
+          <span style={{ color: "black" }}>Login With Google</span>
         </div>
         <div className="user-login-box" onClick={handleFacebook}>
           <Facebook className="user-login-icon" />
-          <span>Login With Facebook</span>
+          <span style={{ color: "black" }}>Login With Facebook</span>
         </div>
       </div>
     </div>

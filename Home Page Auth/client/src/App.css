@@ -1,5 +1,6 @@
 body {
-    background-color: #e8ff9b4f;
+    background-color: rgba(30, 26, 26, 0.694);
     margin: 0;
-    padding: 0;
+    /* padding: 0; */
+    color: white;
 }
