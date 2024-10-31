@@ -95,32 +95,61 @@ export default function UserLogin() {
   //   }
   // };
 
+  // const handleGoogleSuccess = async (credentialResponse) => {
+  //   setLoading(true);
+  //   try {
+  //     const token = credentialResponse.credential;
+  //     const userData = jwtDecode(token);
+
+  //     const receivedData = {
+  //       name: userData.name,
+  //       email: userData.email,
+  //       email_verified: userData.email_verified,
+  //       picture: userData.picture,
+  //     };
+  //     setGoogleData(receivedData);
+
+  //     const response = await dispatch(googleUser(receivedData));
+  //     if (response?.payload?.success) {
+  //       setGoogleData(G_initialData);
+  //       navigate(location.state?.from || "/home");
+  //     } else {
+  //       console.error("Login failed");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error decoding token:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleGoogleSuccess = async (credentialResponse) => {
-    setLoading(true);
-    try {
-      const token = credentialResponse.credential;
-      const userData = jwtDecode(token);
+    // setLoading(true);
+    // try {
+    //   const token = credentialResponse.credential;
+    //   const userData = jwtDecode(token);
 
-      const receivedData = {
-        name: userData.name,
-        email: userData.email,
-        email_verified: userData.email_verified,
-        picture: userData.picture,
-      };
-      setGoogleData(receivedData);
-
-      const response = await dispatch(googleUser(receivedData));
-      if (response?.payload?.success) {
-        setGoogleData(G_initialData);
-        navigate(location.state?.from || "/home");
-      } else {
-        console.error("Login failed");
-      }
-    } catch (error) {
-      console.error("Error decoding token:", error);
-    } finally {
-      setLoading(false);
-    }
+    //   const receivedData = {
+    //     name: userData.name,
+    //     email: userData.email,
+    //     email_verified: userData.email_verified,
+    //     picture: userData.picture,
+    //   };
+    //   setGoogleData(receivedData)
+    //   const response = await dispatch(googleUser(googleData));
+    //   if (response?.payload?.success) {
+    //     setGoogleData(G_initialData);
+    //     const redirectPath = location.state?.from || "/home";
+    //     navigate(redirectPath);
+    //   } else {
+    //     console.error("Google Login failed");
+    //   }
+    // } catch (error) {
+    //   console.error("Error logging in:", error);
+    // } finally {
+    //   setLoading(false);
+    // }
+    // console.log(googleData);
   };
 
   return (
@@ -184,8 +213,8 @@ export default function UserLogin() {
             logo_alignment="center"
             login_uri="/auth/login"
             context="signin"
-            useOneTap
-            auto_select
+            // useOneTap
+            // auto_select
           />
         </div>
         <div className="user-login-box" onClick={handleFacebook}>

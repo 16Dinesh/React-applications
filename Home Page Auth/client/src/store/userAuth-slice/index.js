@@ -60,10 +60,10 @@ export const logoutUser = createAsyncThunk("/user/logout", async () => {
 
 export const googleUser = createAsyncThunk(
   "user/googleLogin",
-  async (googleData) => {
+  async (userCredential) => {
     const response = await axios.post(
       "http://localhost:5000/api/user/google",
-      googleData,
+      userCredential,
       {
         withCredentials: true,
       }

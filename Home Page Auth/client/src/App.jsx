@@ -19,18 +19,20 @@ import Watermelon from "./page/fruits/watermelon";
 import Peach from "./page/fruits/peach";
 import Kiwi from "./page/fruits/kiwi";
 import Mango from "./page/fruits/mango";
-import { useState } from "react";
-import CheckUserAuth from "./components/common/checkUserAuth";
+import { useEffect, useState } from "react";
 import TestGoogleAuth from "./Test/googleAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { checkUser } from "./store/userAuth-slice/index";
+import CheckUserAuth from "./components/common/checkUserAuth" 
 
 function App() {
-  const location = useLocation();
-  const [path, setPath] = useState(location.pathname);
-  console.log(path);
+  const { role, isVerified, Loading } = useSelector((state) => state.userAuth);
 
-  let isVerified = false;
-  const isLoading = false;
-  const role = null;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkUser());
+  }, [dispatch]);
 
   return (
     <div>
@@ -51,7 +53,7 @@ function App() {
             <CheckUserAuth
               isVerified={isVerified}
               role={role}
-              isLoading={isLoading}
+              Loading={Loading}
             >
               <UserHomeLayout />
             </CheckUserAuth>
@@ -70,12 +72,12 @@ function App() {
           <Route path="mango" element={<Mango />} />
         </Route>
 
-          {/* public routes */}
+        {/* public routes */}
         <Route path="/" element={<HomeLayout />}>
           <Route index element={<HomeItems isVerified={isVerified} />} />
         </Route>
 
-        <Route path="/test-google-auth" element={<TestGoogleAuth/>}/>
+        <Route path="/test-google-auth" element={<TestGoogleAuth />} />
       </Routes>
     </div>
   );

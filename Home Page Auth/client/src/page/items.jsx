@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/HomeItems.css";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
+import { useGoogleOneTapLogin } from "@react-oauth/google";
 
 const fruits = [
   {
@@ -78,14 +78,19 @@ export default function HomeItems(isVerified) {
     }
   }
 
-  // const loginGoogle = useGoogleOneTapLogin({
-  //   onSuccess: (credentialResponse) => {
-  //     console.log(credentialResponse);
-  //   },
-  //   onError: () => {
-  //     console.log("Login Failed");
-  //   },
-  // });
+  const login = useGoogleOneTapLogin({
+    onSuccess: (credentialResponse) => {
+      console.log(credentialResponse);
+      const { credential } = credentialResponse;
+      const payload = credential ? decodeJwt(credential) : undefined;
+      if (payload) {
+        console.log(payload);
+      }
+    },
+    onError: () => {
+      console.log("Login Failed");
+    },
+  });
 
   return (
     <div className="grid-container">
@@ -103,20 +108,6 @@ export default function HomeItems(isVerified) {
           </div>
         </div>
       ))}
-      <div style={{}}>
-        {/* <GoogleLogin
-        theme="outline"
-        size="large"
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
-          useOneTap
-          auto_select
-        /> */}
-      </div>
     </div>
   );
 }
