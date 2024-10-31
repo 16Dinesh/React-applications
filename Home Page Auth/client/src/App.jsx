@@ -21,6 +21,7 @@ import Kiwi from "./page/fruits/kiwi";
 import Mango from "./page/fruits/mango";
 import { useState } from "react";
 import CheckUserAuth from "./components/common/checkUserAuth";
+import TestGoogleAuth from "./Test/googleAuth";
 
 function App() {
   const location = useLocation();
@@ -73,6 +74,8 @@ function App() {
         <Route path="/" element={<HomeLayout />}>
           <Route index element={<HomeItems isVerified={isVerified} />} />
         </Route>
+
+        <Route path="/test-google-auth" element={<TestGoogleAuth/>}/>
       </Routes>
     </div>
   );

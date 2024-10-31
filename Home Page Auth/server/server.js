@@ -6,6 +6,10 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 
+
+const authRouter = require("./routes/userRoute/auth-routes");
+
+
 const db_url = process.env.DB_URL;
 
 mongoose
@@ -32,7 +36,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 
-// app.use("/api/auth", authRouter);
+app.use("/api/user", authRouter);
 
 
 const PORT = process.env.PORT || 5000;

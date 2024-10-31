@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/HomeItems.css";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
 
 const fruits = [
   {
@@ -69,13 +70,22 @@ export default function HomeItems(isVerified) {
   const navigate = useNavigate();
 
   function handleClickMe(path) {
-    console.log(path)
+    console.log(path);
     if (isVerified) {
       navigate(path);
     } else {
       navigate("/auth/login", { state: { from: path } });
     }
   }
+
+  // const loginGoogle = useGoogleOneTapLogin({
+  //   onSuccess: (credentialResponse) => {
+  //     console.log(credentialResponse);
+  //   },
+  //   onError: () => {
+  //     console.log("Login Failed");
+  //   },
+  // });
 
   return (
     <div className="grid-container">
@@ -93,6 +103,20 @@ export default function HomeItems(isVerified) {
           </div>
         </div>
       ))}
+      <div style={{}}>
+        {/* <GoogleLogin
+        theme="outline"
+        size="large"
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+          useOneTap
+          auto_select
+        /> */}
+      </div>
     </div>
   );
 }

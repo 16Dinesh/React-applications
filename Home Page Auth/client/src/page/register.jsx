@@ -38,10 +38,12 @@ export default function UserRegister() {
 
   const handleFireBaseGoogleLogin = async () => {
     // Google login logic
+    // Google login from the firebase 
   };
 
   const handleAnonymousLogin = () => {
     // Anonymous login logic
+    // firebase Anonymous login
   };
 
   const handlePhoneNumberChange = (e) => {

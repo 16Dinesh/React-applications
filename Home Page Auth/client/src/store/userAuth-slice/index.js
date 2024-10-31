@@ -7,91 +7,117 @@ const initialState = {
   role: null,
 };
 
-export const registerUser = createAsyncThunk(
-  "/user/register",
+// Register User
+export const registerUser = createAsyncThunk("/user/register", async (data) => {
+  const response = await axios.post(
+    "http://localhost:5000/api/user/register",
+    data,
+    {
+      withCredentials: true,
+    }
+  );
+  return response.data;
+});
 
-  async (formData) => {
+// Login User
+export const loginUser = createAsyncThunk("/user/login", async (formData) => {
+  const response = await axios.post(
+    "http://localhost:5000/api/user/login",
+    formData,
+    {
+      withCredentials: true,
+    }
+  );
+  return response.data;
+});
+
+// Logout User
+export const logoutUser = createAsyncThunk("/user/logout", async () => {
+  const response = await axios.post(
+    "http://localhost:5000/api/user/logout",
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+  return response.data;
+});
+
+// Google User Login
+// export const googleUser = createAsyncThunk(
+//   "/user/googleLogin",
+//   async (googleData) => {
+//     const response = await axios.post(
+//       "http://localhost:5000/api/user/google",
+//       googleData,
+//       {
+//         withCredentials: true,
+//       }
+//     );
+//     return response.data;
+//   }
+// );
+
+export const googleUser = createAsyncThunk(
+  "user/googleLogin",
+  async (googleData) => {
     const response = await axios.post(
-      "http://localhost:5000/api/user/register",
-      formData,
+      "http://localhost:5000/api/user/google",
+      googleData,
       {
         withCredentials: true,
       }
     );
-
     return response.data;
   }
 );
 
-export const loginUser = createAsyncThunk(
-  "/user/login",
-
-  async (formData) => {
-    const response = await axios.post(
-      "http://localhost:5000/api/user/login",
-      formData,
-      {
-        withCredentials: true,
-      }
-    );
-
-    return response.data;
-  }
-);
-
-export const logoutUser = createAsyncThunk(
-  "/user/logout",
-
+// Firebase Anonymous Login
+export const anonymousUser = createAsyncThunk(
+  "/user/anonymousLogin",
   async () => {
     const response = await axios.post(
-      "http://localhost:5000/api/user/logout",
+      "http://localhost:5000/api/user/anonymous",
       {},
       {
         withCredentials: true,
       }
     );
-
     return response.data;
   }
 );
 
-//check this
-export const googleUser = createAsyncThunk(
-  "/user/googleLogin",
-
-  async () => {
+// Firebase Facebook Login
+export const facebookUser = createAsyncThunk(
+  "/user/facebookLogin",
+  async (formData) => {
     const response = await axios.post(
-      "http://localhost:5000/api/user/googleUser",
+      "http://localhost:5000/api/user/facebookUser",
       formData,
       {
         withCredentials: true,
       }
     );
-
-    return response.data
-  }
-)
-
-export const checkUser = createAsyncThunk(
-  "/user/check-user",
-
-  async () => {
-    const response = await axios.get(
-      "http://localhost:5000/api/user/check-user",
-      {
-        withCredentials: true,
-        headers: {
-          "Cache-Control":
-            "no-store, no-cache, must-revalidate, proxy-revalidate",
-        },
-      }
-    );
-
     return response.data;
   }
 );
 
-const authSlice = createSlice({
+// Check User
+export const checkUser = createAsyncThunk("/user/check-user", async () => {
+  const response = await axios.get(
+    "http://localhost:5000/api/user/check-user",
+    {
+      withCredentials: true,
+      headers: {
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+      },
+    }
+  );
+  return response.data;
+});
+
+const userAuth = createSlice({
   name: "userAuth",
   initialState,
   reducers: {
@@ -116,9 +142,6 @@ const authSlice = createSlice({
         state.Loading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        console.log(`This is the LoginUser State ${action}`)
-        console.log(action);
-
         state.Loading = false;
         state.role = action.payload.success ? action.payload.user : null;
         state.isVerified = action.payload.success;
@@ -141,6 +164,45 @@ const authSlice = createSlice({
         state.role = null;
         state.isVerified = false;
       })
+      .addCase(googleUser.pending, (state) => {
+        state.Loading = true;
+      })
+      .addCase(googleUser.fulfilled, (state, action) => {
+        state.Loading = false;
+        state.role = action.payload.success ? action.payload.role : null;
+        state.isVerified = action.payload.success;
+      })
+      .addCase(googleUser.rejected, (state, action) => {
+        state.Loading = false;
+        state.role = null;
+        state.isVerified = false;
+      })
+      .addCase(anonymousUser.pending, (state) => {
+        state.Loading = true;
+      })
+      .addCase(anonymousUser.fulfilled, (state, action) => {
+        state.Loading = false;
+        state.role = action.payload.success ? action.payload.role : null;
+        state.isVerified = action.payload.success;
+      })
+      .addCase(anonymousUser.rejected, (state, action) => {
+        state.Loading = false;
+        state.role = null;
+        state.isVerified = false;
+      })
+      .addCase(facebookUser.pending, (state) => {
+        state.Loading = true;
+      })
+      .addCase(facebookUser.fulfilled, (state, action) => {
+        state.Loading = false;
+        state.role = action.payload.success ? action.payload.role : null;
+        state.isVerified = action.payload.success;
+      })
+      .addCase(facebookUser.rejected, (state, action) => {
+        state.Loading = false;
+        state.role = null;
+        state.isVerified = false;
+      })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.Loading = false;
         state.role = null;
@@ -149,5 +211,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser } = authSlice.actions;
-export default authSlice.reducer;
+export const { setUser } = userAuth.actions;
+export default userAuth.reducer;

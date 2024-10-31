@@ -1,30 +1,39 @@
 import "../styles/login.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Phone, Google, Facebook } from "@mui/icons-material";
+import { Phone, Facebook } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../store/userAuth-slice";
+import { googleUser, loginUser } from "../store/userAuth-slice";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const initialData = {
   email: "",
   password: "",
 };
 
+const G_initialData = {
+  name: "",
+  email: "",
+  email_verified: false,
+  picture: "",
+};
+
 export default function UserLogin() {
   const [formData, setFormData] = useState(initialData);
+  const [googleData, setGoogleData] = useState(G_initialData);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const handleLogin = async () => {
+  const handleLoginBTN = async () => {
     setLoading(true);
     try {
       const response = await dispatch(loginUser(formData));
       if (response?.payload?.success) {
         setFormData(initialData);
         const redirectPath = location.state?.from || "/home";
-        console.log(redirectPath);
         navigate(redirectPath);
       } else {
         console.error("Login failed");
@@ -40,13 +49,7 @@ export default function UserLogin() {
     navigate("/auth/otp");
   };
 
-  const handleGoogle = () => {
-    // Placeholder for Google login logic
-    console.log("Google login clicked");
-  };
-
   const handleFacebook = () => {
-    // Placeholder for Facebook login logic
     console.log("Facebook login clicked");
   };
 
@@ -56,6 +59,68 @@ export default function UserLogin() {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  // const handleGoogleSuccess = (credentialResponse) => {
+  //   const token = credentialResponse.credential;
+  //   const userData = jwtDecode(token);
+  //   console.log("Decoded User Data:", userData);
+  // };
+
+  // const handleGoogleSuccess = async (credentialResponse) => {
+  //   const token = credentialResponse.credential;
+  //   console.log(token);
+  //   setLoading(true);
+  //   try {
+  //     const userData = jwtDecode(token); // Decode the JWT
+  //     console.log("Decoded User Data:", userData); // Log decoded user data
+
+  //     const receivedData = {
+  //       name: userData.name,
+  //       email: userData.email,
+  //       email_verified: userData.email_verified,
+  //       picture: userData.picture,
+  //     };
+  //     googleData(receivedData);
+  //     const response = await dispatch(googleUser(googleData));
+  //     if (response?.payload?.success) {
+  //       setFormData(G_initialData);
+  //       const redirectPath = location.state?.from || "/home";
+  //       navigate(redirectPath);
+  //     } else {
+  //       console.error("Login failed");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error decoding token:", error);
+  //   }
+  // };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setLoading(true);
+    try {
+      const token = credentialResponse.credential;
+      const userData = jwtDecode(token);
+
+      const receivedData = {
+        name: userData.name,
+        email: userData.email,
+        email_verified: userData.email_verified,
+        picture: userData.picture,
+      };
+      setGoogleData(receivedData);
+
+      const response = await dispatch(googleUser(receivedData));
+      if (response?.payload?.success) {
+        setGoogleData(G_initialData);
+        navigate(location.state?.from || "/home");
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("Error decoding token:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -82,7 +147,7 @@ export default function UserLogin() {
         </div>
         <div className="user-login-options">
           <label>
-            <input type="checkbox" /> Remember Me
+            <input type="checkbox" name="rememberMe" /> Remember Me
           </label>
           <Link to="/auth/forgot-user" className="user-login-forgot-link">
             Forgot Password?
@@ -91,7 +156,7 @@ export default function UserLogin() {
       </div>
       <button
         className="user-login-button"
-        onClick={handleLogin}
+        onClick={handleLoginBTN}
         disabled={loading}
       >
         {loading ? "Logging in..." : "Login"}
@@ -100,15 +165,32 @@ export default function UserLogin() {
       <div className="user-login-controllers">
         <div className="user-login-box" onClick={handleFormOTP}>
           <Phone className="user-login-icon" />
-          <span style={{ color: "black" }}>Login With OTP</span>
+          <span style={{ color: "black" }}>Sign in with OTP</span>
         </div>
-        <div className="user-login-box" onClick={handleGoogle}>
-          <Google className="user-login-icon" />
-          <span style={{ color: "black" }}>Login With Google</span>
+        <div
+          className="google-login-wrapper"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              console.log("Google Login Failed");
+            }}
+            type="standard"
+            theme="filled_blue"
+            size="large"
+            shape="rectangular"
+            width="250px"
+            logo_alignment="center"
+            login_uri="/auth/login"
+            context="signin"
+            useOneTap
+            auto_select
+          />
         </div>
         <div className="user-login-box" onClick={handleFacebook}>
           <Facebook className="user-login-icon" />
-          <span style={{ color: "black" }}>Login With Facebook</span>
+          <span style={{ color: "black" }}>Sign in with Facebook</span>
         </div>
       </div>
     </div>
